@@ -158,6 +158,10 @@ Now the hdfs should be properly setup. To connect to the web gui edit your ~/.ss
 Now you should be able to connect to the hdfs web gui by typing http://localhost:9870 in your browser, on your local machine. (This assumes the proper security group is added to the master.)
 
 ## 安装SPARK
+**Step 0:**
+正常情况下,Pyspark和Scala随Spark一起安装.
+如果没有,需要额外安装.
+
 **Step 1:** 安装
 - 1.download: spark-3.1.1-bin-hadoop2.7.tgz from official website.
 - 2.在master节点上创建文件夹，并将安装包解压到里面  
