@@ -1,0 +1,37 @@
+The database is "tweets".
+The collection is "data".
+
+> db.runCommand(
+{       mapReduce:"data",
+        map: function(){var line =this.text;
+                        var words = line.split(/[\W ]/);
+                        var prons = ["hon","han","den","det","denna","denne","hen"];   
+        	            for (var x in words) {
+                            words[x] = words[x].toLowerCase();
+							}
+                        for (var y in prons){
+							var i = 0;
+							for (var z in words){
+								if (prons[y]==words[z]){i=i+1;}
+							}
+							if (i > 0){emit(prons[y] ,1);}
+                            }
+						words.length=0;
+						prons.length=0;
+                        },                
+    	reduce:function(key,values){ return Array.sum(values); },
+     	query:{retweeted_status:null},
+     	out:"temp_result" 
+})
+
+> db.temp_result.find()
+{ "_id" : "den", "value" : 1245889 }
+{ "_id" : "hon", "value" : 307718 }
+{ "_id" : "denna", "value" : 22472 }
+{ "_id" : "denne", "value" : 3988 }
+{ "_id" : "han", "value" : 666999 }
+{ "_id" : "hen", "value" : 31293 }
+{ "_id" : "det", "value" : 459455 }
+
+> db.data.find({retweeted_status:null}).count()
+2341577

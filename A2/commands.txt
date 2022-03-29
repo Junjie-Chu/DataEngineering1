@@ -1,0 +1,72 @@
+连接实例
+ssh -i /home/junjie-chu/桌面/DEKEY/dataeng1.pem ubuntu@130.238.29.217
+
+scp -i /home/junjie-chu/桌面/DEKEY/dataeng1.pem ubuntu@130.238.29.30:/home/ubuntu/tweets.tar.gz /home/junjie-chu/桌面/DataEngineering1
+
+scp -i /home/junjie-chu/桌面/DEKEY/dataeng1.pem /home/junjie-chu/桌面/DataEngineering1/mapper.py ubuntu@130.238.29.217:/home/ubuntu/task2
+
+tar -xzvf file.tar.gz //解压tar.gz
+
+root@junjie-chu-a2-3:/usr/local/hadoop/etc# chmod 777 hadoop/core-site.xml
+root@junjie-chu-a2-3:/usr/local/hadoop/etc# chmod 777 hadoop/hdfs-site.xml
+root@junjie-chu-a2-3:/usr/local/hadoop/etc# vim /usr/local/hadoop/etc/hadoop/core-site.xml
+root@junjie-chu-a2-3:/usr/local/hadoop/etc# vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
+/usr/local/hadoop/bin/hdfs dfs -ls /input/tweets
+
+/usr/local/hadoop/bin/hdfs dfs -put /home/ubuntu/tweets/tweets_3.txt /input
+
+/usr/local/hadoop/bin/hdfs dfs -copyFromLocal /home/ubuntu/tweets /input
+
+/usr/local/hadoop/bin/hdfs namenode -format
+
+/usr/local/hadoop/sbin/start-dfs.sh
+
+/usr/local/hadoop/bin/hdfs dfs -mkdir /input
+
+/usr/local/hadoop/bin/hdfs dfs -rm -r /output
+
+/usr/local/hadoop/bin/hdfs dfs -get /output /home/ubuntu/task2
+
+/usr/local/hadoop/sbin/stop-dfs.sh
+
+/usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-*streaming*.jar \
+-file /home/ubuntu/task2/mapper.py    -mapper /home/ubuntu/task2/mapper.py \
+-file /home/ubuntu/task2/reducer.py   -reducer /home/ubuntu/task2/reducer.py \
+-input /input/* -output /output
+
+rm -rf /usr/local/hadoop/tmp
+
+cat /home/ubuntu/tweets/tweets_19.txt | /home/ubuntu/task2/mapper.py | sort -k1,1 | /home/ubuntu/task2/reducer.py
+
+/usr/local/hadoop/bin/hdfs dfs -cat /output/part-00000
+
+mongoimport -h localhost:27017 -d tweets -c data /home/ubuntu/tweets/tweets_1.txt
+
+/home/ubuntu/tweets/tweets_1.txt
+
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/home/tmp</value>
+    </property>
+
+db.data2.find({retweeted_status:null}).count()
+
+db.data1.drop()
+
+sudo chmod 777 /home/junjie-chu/disk2
+
+sudo mount /dev/sdb1 /home/junjie-chu/disk2
+
+for filename in *.txt; do mongoimport -d tweets -c data4 $filename; done 
+
+mongoexport -d tweets -c temp_result  -o /home/junjie-chu/disk2
+
+
+正确关闭mongod 的方法：进入mongo shell
+
+use admin
+
+db.shutdownServer()
+
+
