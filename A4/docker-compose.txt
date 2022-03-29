@@ -1,0 +1,19 @@
+version: "3"
+services:  
+  master:
+    image: sparkaio/first:v0
+    hostname: master
+    restart: always
+    ports:
+      - "4040:4040"
+      - "7077:7077"
+      - "8080:8080"
+    command: bash /usr/local/spark/sbin/start-master.sh
+  worker1:
+    image: sparkaio/first:v0
+    restart: always
+    depends_on:
+      - master
+    ports:
+      - "8081:8081"
+    command: bash /usr/local/spark/sbin/start-slave.sh spark://master:7077
